@@ -1,28 +1,44 @@
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
+.vscode/*
 *.exe
-*.out
-*.app
+.vscode/ipch/9faa8bb420ff3cd6/mmap_address.bin
+.vscode/ipch/cbd4962f35f2b0e0/mmap_address.bin
+.vscode/ipch/261bf94148f38edc/mmap_address.bin
+.vscode/ipch/429dfea672d8e9ec/mmap_address.bin
+.vscode/c_cpp_properties.json
+.vscode/ipch/cbd4962f35f2b0e0/Evaluador.ipch
+.vscode/ipch/bee00abc83fb3f31/mmap_address.bin
+.vscode/ipch/a0054b68b10b63d6/mmap_address.bin
+.vscode/ipch/2bb0d17163e8c9be/consumidor.ipch
+.vscode/ipch/ce9031d669c73fb7/mmap_address.bin
+.vscode/ipch/2bb0d17163e8c9be/mmap_address.bin
+.vscode/ipch/ce9031d669c73fb7/productor.ipch
+.vscode/ipch/f5c3663b70c40da4/productor.ipch
+.vscode/ipch/2cf38fcdeed00fbd/delMemSem.ipch
+.vscode/ipch/2cf38fcdeed00fbd/mmap_address.bin
+.vscode/ipch/3073edb1905b5c8f/consumidor.ipch
+.vscode/ipch/3073edb1905b5c8f/mmap_address.bin
+.vscode/ipch/a54ba7a8d14af51a/productor.ipch
+.vscode/ipch/a54ba7a8d14af51a/mmap_address.bin
+.vscode/ipch/c014f17547b3ff4/initMemSem.ipch
+.vscode/ipch/c014f17547b3ff4/mmap_address.bin
+.vscode/ipch/f5c3663b70c40da4/mmap_address.bin
+.vscode/ipch/a2abce404955d4ed/mmap_address.bin
+.vscode/ipch/a2abce404955d4ed/consumidor.ipch
+.vscode/settings.json
+.vscode/ipch/a0054b68b10b63d6/elementos.ipch
+.vscode/ipch/a7c6609dafadab71/DeleteEvaluador.ipch
+.vscode/ipch/a7c6609dafadab71/mmap_address.bin
+.vscode/ipch/ed43cf7055a86860/sync.ipch
+.vscode/ipch/41bd7331fdb5dca6/Smoker.ipch
+.vscode/ipch/41bd7331fdb5dca6/mmap_address.bin
+.vscode/ipch/440c5f3778f0458f/mmap_address.bin
+.vscode/ipch/54f48e4d68a57e76/Agent.ipch
+.vscode/ipch/54f48e4d68a57e76/mmap_address.bin
+.vscode/ipch/ed43cf7055a86860/mmap_address.bin
+.vscode/ipch/a56d7797efbaf92d/mmap_address.bin
+.vscode/ipch/a56d7797efbaf92d/IniciadorMemoria.ipch
+.vscode/ipch/257f1abf27e92e47/ingresoelemento.ipch
+.vscode/ipch/99e7f4880f75010a/mmap_address.bin
+.vscode/ipch/911c5b9bfc1f30b5/mmap_address.bin
+.vscode/ipch/257f1abf27e92e47/mmap_address.bin
+.vscode/ipch/99e7f4880f75010a/productor.ipch
