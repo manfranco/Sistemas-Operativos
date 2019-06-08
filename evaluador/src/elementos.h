@@ -13,10 +13,13 @@ struct header{
   char n[30];
 };
 
+<<<<<<< HEAD
 struct headerQ{
   int q;
 };
 
+=======
+>>>>>>> master
 
 struct registroentrada {
   int bandeja;
