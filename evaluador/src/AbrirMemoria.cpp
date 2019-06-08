@@ -18,7 +18,7 @@ char *abrirMemoria(string nombre)
     int fd = shm_open(nombre.c_str(), O_RDWR, 0660);
     if (fd < 0)
     {
-        cerr << "Error abriendo la memoria compartida: 4"
+        cerr << "Error abriendo la memoria compartida: 4 "
              << errno << strerror(errno) << endl;
         exit(1);
     }
@@ -41,13 +41,9 @@ char *abrirMemoria(string nombre)
     int q = pHeader->q;
 
     munmap((void *)pHeader, sizeof(struct header));
-<<<<<<< HEAD
     size_t memorysize =  sizeof(struct header) + //Tamaño del header 
                         (sizeof(struct registroentrada) * i * ie) + //Tamaño de la bandeja de entrada
                         (sizeof(struct registrosalida) * oe); //Tamaño de la bandeja de salida
-=======
-    size_t memorysize = sizeof(struct header) + (sizeof(struct registroentrada) * i * ie) + (sizeof(struct registrosalida) * oe);
->>>>>>> master
 
     if ((dir = (char *)(mmap(NULL, memorysize, PROT_READ | PROT_WRITE, MAP_SHARED,
                              fd, 0))) == MAP_FAILED)

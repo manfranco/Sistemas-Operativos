@@ -16,7 +16,7 @@
 using namespace std;
 // función que le entregan un registro a guardar en la memoria compartida de nombre
 
-int ingresarRegistro(struct registroentrada registro, string nombre)
+int ingresarRegistro(registroentrada registro, string nombre)
 {
 
   //Llama los 3 semaforo requeridos, mutex, vacio lleno para el productor consumidor
@@ -33,7 +33,7 @@ int ingresarRegistro(struct registroentrada registro, string nombre)
   char *dir = abrirMemoria(nombre);
   bool insertado = false;
 
-  struct header *pHeader = (struct header *)dir;
+  header *pHeader = (header *)dir;
 
   int i  = pHeader->i;
   int ie = pHeader->ie;
@@ -46,7 +46,7 @@ int ingresarRegistro(struct registroentrada registro, string nombre)
   string s = to_string(posSem);
 
   // posición inicial de la bandeja i
-  char *pos = (registro.bandeja * ie * sizeof(registroentrada)) + dir + sizeof(struct header);
+  char *pos = (registro.bandeja * ie * sizeof(registroentrada)) + dir + sizeof(header);
 
   //hasta que no logre insertar intentar
   // Espera la semaforo para insertar, vacio para saber si hay cupo y el mutex
@@ -58,7 +58,7 @@ int ingresarRegistro(struct registroentrada registro, string nombre)
   {
     //posición en la bandeja
     char *posn = (pos + (recorrido * sizeof(registroentrada)));
-    struct registroentrada *pRegistro = (struct registroentrada *)posn;
+    registroentrada *pRegistro = (registroentrada *)posn;
 
     //si logra insertar se sale
     if (pRegistro->cantidad <= 0)
@@ -91,7 +91,7 @@ int recorrer(string nombre)
   // posición inicial
   char *dir = abrirMemoria(nombre);
   bool insertado = false;
-  struct header *pHeader = (struct header *)dir;
+  header *pHeader = (header *)dir;
 
   int i = pHeader->i;
   int ie = pHeader->ie;
@@ -99,11 +99,11 @@ int recorrer(string nombre)
 
   while (temp1 < i)
   {
-    char *pos = (temp1 * ie * sizeof(registroentrada)) + dir + sizeof(struct header);
+    char *pos = (temp1 * ie * sizeof(registroentrada)) + dir + sizeof(header);
     while (temp2 < ie)
     {
       char *posn = (pos + (temp2 * sizeof(registroentrada)));
-      struct registroentrada *pRegistro = (struct registroentrada *)posn;
+      registroentrada *pRegistro = (registroentrada *)posn;
       cout << pRegistro->id << pRegistro->tipo << pRegistro->cantidad << endl;
       temp2++;
     }

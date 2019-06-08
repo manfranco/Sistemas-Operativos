@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-    string nombre = "buffer";
+    string nombre = "evaluator";
     int i = 3;
     int ie = 5;
     int oe = 10;
@@ -20,6 +20,7 @@ int main()
 
     crearEspacio(nombre, i, ie, oe, q, b, d, s);
     crearSemaforo(nombre);
+    crearQ(nombre);
     struct registroentrada test;
     test.bandeja = 0;
     test.cantidad = 3;
@@ -30,26 +31,20 @@ int main()
     test2.bandeja = 2;
     test2.cantidad = 3;
     test2.id = 5;
-    test2.tipo = 'D';
-    //Holo
-    struct registrosalida testsalida1;
-    testsalida1.cantidad = 3;
-    testsalida1.id = 99;
-    testsalida1.tipo = 'D';
+    test2.tipo = 'B';
     ingresarRegistro(test, nombre);
     ingresarRegistro(test2, nombre);
-    crearQ(nombre);
 
     recorrer(nombre);
     crearHilo(nombre);
     cout << "" << endl;
     cout << "" << endl;
-    sleep(1);
+    sleep(3);
     recorrerQ(nombre);
     retirarRegistroDeQ('D',nombre);
     cout << "" << endl;
     cout << "" << endl;
-    sleep(1);
+    sleep(3);
     recorrerQ(nombre);
 
     return 0;
