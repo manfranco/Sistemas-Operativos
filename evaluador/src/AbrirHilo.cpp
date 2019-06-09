@@ -66,7 +66,7 @@ void crearHilo(string n)
     Bande.Nombre = n;
     string NombreHilo = "Hilo" + n;
 
-    // Crea los hilos y les asigna la funcion
+    // Crea los hilos y les asigna la funcio
     for (int m = 0; m < i; ++m)
     {
         Bande.Bandeja = m;
