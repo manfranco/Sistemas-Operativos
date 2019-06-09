@@ -46,7 +46,7 @@ int ingresarRegistro(RegistroEntrada registro, string nombre)
   string s = to_string(posSem);
 
   // posición inicial de la bandeja i
-  char *pos = (registro.bandeja * ie * sizeof(RegistroEntrada)) + dir + sizeof(Header);
+  char *Pos = (registro.bandeja * ie * sizeof(RegistroEntrada)) + dir + sizeof(Header);
 
   //hasta que no logre insertar intentar
   // Espera la semaforo para insertar, vacio para saber si hay cupo y el mutex
@@ -57,8 +57,8 @@ int ingresarRegistro(RegistroEntrada registro, string nombre)
   while (recorrido < ie)
   {
     //posición en la bandeja
-    char *posn = (pos + (recorrido * sizeof(RegistroEntrada)));
-    RegistroEntrada *pRegistro = (RegistroEntrada *)posn;
+    char *PosN = (Pos + (recorrido * sizeof(RegistroEntrada)));
+    RegistroEntrada *pRegistro = (RegistroEntrada *)PosN;
 
     //si logra insertar se sale
     if (pRegistro->cantidad <= 0)
@@ -85,8 +85,8 @@ int ingresarRegistro(RegistroEntrada registro, string nombre)
 // Método que imprime el contenido de las bandejas de entrada
 int recorrer(string nombre)
 {
-  int temp1 = 0;
-  int temp2 = 0;
+  int Temp1 = 0;
+  int Temp2 = 0;
 
   // posición inicial
   char *dir = abrirMemoria(nombre);
@@ -97,18 +97,18 @@ int recorrer(string nombre)
   int ie = pHeader->ie;
   int oe = pHeader->oe;
 
-  while (temp1 < i)
+  while (Temp1 < i)
   {
-    char *pos = (temp1 * ie * sizeof(RegistroEntrada)) + dir + sizeof(Header);
-    while (temp2 < ie)
+    char *Pos = (Temp1 * ie * sizeof(RegistroEntrada)) + dir + sizeof(Header);
+    while (Temp2 < ie)
     {
-      char *posn = (pos + (temp2 * sizeof(RegistroEntrada)));
-      RegistroEntrada *pRegistro = (RegistroEntrada *)posn;
+      char *PosN = (Pos + (Temp2 * sizeof(RegistroEntrada)));
+      RegistroEntrada *pRegistro = (RegistroEntrada *)PosN;
       cout << pRegistro->id << pRegistro->tipo << pRegistro->cantidad << endl;
-      temp2++;
+      Temp2++;
     }
-    temp1++;
-    temp2 = 0;
+    Temp1++;
+    Temp2 = 0;
   }
   return 0;
 }
