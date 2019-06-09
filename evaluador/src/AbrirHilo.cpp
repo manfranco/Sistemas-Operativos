@@ -11,9 +11,7 @@
 #include <sys/types.h>
 #include "Elementos.h"
 #include "AbrirMemoria.cpp"
-#include "RetirarElemento.cpp"
 #include "BandejasQ.cpp"
-#include "RetiroBandejaQ.cpp"
 #include "ManejoOE.cpp"
 
 using namespace std;
