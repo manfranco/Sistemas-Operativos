@@ -8,14 +8,14 @@
 #include <cerrno>
 #include <cstring>
 #include <unistd.h>
-#include "elementos.h"
+#include "Elementos.h"
 
 using namespace std;
 // Permite abrir el espacio de memoria compartida y devuelve la posición inicial
-char *abrirMemoria(string nombre)
+char *abrirMemoria(string Nombre)
 {
-    nombre = "/" + nombre;
-    int fd = shm_open(nombre.c_str(), O_RDWR, 0660);
+    Nombre = "/" + Nombre;
+    int fd = shm_open(Nombre.c_str(), O_RDWR, 0660);
     if (fd < 0)
     {
         cerr << "Error abriendo la memoria compartida: 4 "
@@ -25,7 +25,7 @@ char *abrirMemoria(string nombre)
 
     char *dir;
 
-    if ((dir = (char *)(mmap(NULL, sizeof(struct header), PROT_READ | PROT_WRITE, MAP_SHARED,
+    if ((dir = (char *)(mmap(NULL, sizeof(struct Header), PROT_READ | PROT_WRITE, MAP_SHARED,
                              fd, 0))) == MAP_FAILED)
     {
         cerr << "Error mapeando la memoria compartida: 5"
@@ -33,17 +33,17 @@ char *abrirMemoria(string nombre)
         exit(1);
     }
 
-    struct header *pHeader = (struct header *)dir;
+    struct Header *PosHeader = (struct Header *)dir;
 
-    int i = pHeader->i;
-    int ie = pHeader->ie;
-    int oe = pHeader->oe;
-    int q = pHeader->q;
+    int i = PosHeader->i;
+    int ie = PosHeader->ie;
+    int oe = PosHeader->oe;
+    int q = PosHeader->q;
 
-    munmap((void *)pHeader, sizeof(struct header));
-    size_t memorysize =  sizeof(struct header) + //Tamaño del header 
-                        (sizeof(struct registroentrada) * i * ie) + //Tamaño de la bandeja de entrada
-                        (sizeof(struct registrosalida) * oe); //Tamaño de la bandeja de salida
+    munmap((void *)PosHeader, sizeof(struct Header));
+    size_t memorysize =  sizeof(struct Header) + //Tamaño del Header 
+                        (sizeof(struct RegistroEntrada) * i * ie) + //Tamaño de la bandeja de entrada
+                        (sizeof(struct RegistroSalida) * oe); //Tamaño de la bandeja de salida
 
     if ((dir = (char *)(mmap(NULL, memorysize, PROT_READ | PROT_WRITE, MAP_SHARED,
                              fd, 0))) == MAP_FAILED)

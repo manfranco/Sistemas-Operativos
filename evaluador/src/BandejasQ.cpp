@@ -9,23 +9,23 @@
 #include <cstring>
 #include <unistd.h>
 #include "AbrirMemoria.cpp"
-#include "elementos.h"
+#include "Elementos.h"
 
 using namespace std;
 
-int crearQ(string nombre)
+int crearQ(string Nombre)
 {
     //accede a la memoria compartida
     // posición inicial
-    char *dir = abrirMemoria(nombre);
-     header *pHeader = ( header *)dir;
-    int q = pHeader->q;
-    int i = pHeader->i;
+    char *dir = abrirMemoria(Nombre);
+     Header *PosHeader = ( Header *)dir;
+    int q = PosHeader->q;
+    int i = PosHeader->i;
 
-    // Abrir espacio de memoria para usar, usando el nombre n
-    nombre = nombre + "Q";
+    // Abrir espacio de memoria para usar, usando el Nombre n
+    Nombre = Nombre + "Q";
 
-    int fd = shm_open(nombre.c_str(), O_RDWR | O_CREAT | O_EXCL, 0660);
+    int fd = shm_open(Nombre.c_str(), O_RDWR | O_CREAT | O_EXCL, 0660);
     if (fd < 0)
     {
         cerr << "Error creando la memoria compartida: Q1"
@@ -33,7 +33,7 @@ int crearQ(string nombre)
         exit(1);
     }
     //Acorta la region de memoria, de acuerdo al tamaño requerido
-    if (ftruncate(fd, sizeof(headerQ) != 0)) 
+    if (ftruncate(fd, sizeof(HeaderQ) != 0)) 
     {
         cerr << "Error creando la memoria compartida: Q2"
              << errno << strerror(errno) << endl;
@@ -41,26 +41,26 @@ int crearQ(string nombre)
     }
     char *dirQ;
 
-    if ((dirQ = (char *)mmap(NULL, sizeof(headerQ), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)) == MAP_FAILED)
+    if ((dirQ = (char *)mmap(NULL, sizeof(HeaderQ), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)) == MAP_FAILED)
     {
         cerr << "Error mapeando la memoria compartida: Q3"
              << errno << strerror(errno) << endl;
         exit(1);
     }
 
-    headerQ *pHeaderQ = (headerQ *)dirQ;
-    pHeaderQ->q = q;
-    pHeaderQ->i = i;
+    HeaderQ *PosHeaderQ = (HeaderQ *)dirQ;
+    PosHeaderQ->q = q;
+    PosHeaderQ->i = i;
 
     close(fd);
     return EXIT_SUCCESS;
 }
 
 // Permite abrir el espacio de memoria compartida Q y devuelve la posición inicial
-char *abrirQ(string nombre)
+char *abrirQ(string Nombre)
 {
-    nombre = "/" + nombre + "Q";
-    int fd = shm_open(nombre.c_str(), O_RDWR, 0660);
+    Nombre = "/" + Nombre + "Q";
+    int fd = shm_open(Nombre.c_str(), O_RDWR, 0660);
     if (fd < 0)
     {
         cerr << "Error abriendo la memoria compartida: Q4"
@@ -70,19 +70,19 @@ char *abrirQ(string nombre)
 
     char *dir;
 
-    if ((dir = (char *)(mmap(NULL, sizeof(headerQ), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0))) == MAP_FAILED)
+    if ((dir = (char *)(mmap(NULL, sizeof(HeaderQ), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0))) == MAP_FAILED)
     {
         cerr << "Error mapeando la memoria compartida: Q5"
              << errno << strerror(errno) << endl;
         exit(1);
     }
 
-    headerQ *pHeaderQ = (headerQ *)dir;
-    int q = pHeaderQ->q;
-    int i = pHeaderQ->i;
+    HeaderQ *PosHeaderQ = (HeaderQ *)dir;
+    int q = PosHeaderQ->q;
+    int i = PosHeaderQ->i;
 
-    munmap((void *)pHeaderQ, sizeof(headerQ));
-    size_t memorysize = sizeof(headerQ) + (sizeof(registrosalida) * q * 3);
+    munmap((void *)PosHeaderQ, sizeof(HeaderQ));
+    size_t memorysize = sizeof(HeaderQ) + (sizeof(RegistroSalida) * q * 3);
 
     if ((dir = (char *)(mmap(NULL, memorysize, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0))) == MAP_FAILED)
     {
@@ -93,97 +93,98 @@ char *abrirQ(string nombre)
     return dir;
 }
 
-int recorrerQ(string nombre)
+int recorrerQ(string Nombre)
 {
 
-    int temp1 = 0;
-    int temp2 = 0;
-    int recorrido = 0;
+    int Temp1 = 0;
+    int Temp2 = 0;
+    int Recorrido = 0;
 
     // posición inicial
-    char *dire = abrirQ(nombre);
-    headerQ *pHeaderQ = (headerQ *)dire;
-    int q = pHeaderQ->q;
+    char *dire = abrirQ(Nombre);
+    HeaderQ *PosHeaderQ = (HeaderQ *)dire;
+    int q = PosHeaderQ->q;
 
-    while (recorrido < 3)
+    while (Recorrido < 3)
     {
-        char *pos = dire + sizeof( headerQ) + (recorrido * sizeof(registrosalida) * q);
+        char *Pos = dire + sizeof( HeaderQ) + (Recorrido * sizeof(RegistroSalida) * q);
 
-        while (temp2 < q)
+        while (Temp2 < q)
         {
-            char *posn = pos + (temp2 * sizeof(registrosalida));
-            registrosalida *pRegistroSalida = (registrosalida *)posn;
-            cout << pRegistroSalida->id << pRegistroSalida->tipo << pRegistroSalida->cantidad << endl;
-            temp2++;
+            char *PosN = Pos + (Temp2 * sizeof(RegistroSalida));
+            RegistroSalida *PRegistroSalida = (RegistroSalida *)PosN;
+            cout << PRegistroSalida->id << PRegistroSalida->tipo << PRegistroSalida->cantidad << endl;
+            Temp2++;
         }
 
-        recorrido++;
-        temp2 = 0;
+        Recorrido++;
+        Temp2 = 0;
     }
     return 0;
 }
 
-int ingresarBandejaQ( registrosalida registro, string nombre)
+int ingresarBandejaQ( RegistroSalida Registro, string Nombre)
 {
     //accede a la memoria compartida
     // posición inicial
-    char *dire = abrirQ(nombre);
+    char *dire = abrirQ(Nombre);
 
-    headerQ *pHeaderQ = ( headerQ *)dire;
+    HeaderQ *PosHeaderQ = ( HeaderQ *)dire;
 
-    int q = pHeaderQ->q;
-    int i = pHeaderQ->i;
+    int q = PosHeaderQ->q;
+    int i = PosHeaderQ->i;
 
-    //Llama los 3 semaforo requeridos, mutex, vacio lleno para el productor consumidor
+    //Llama los 3 semaforo requeridos, Mutex, Vacio Lleno para el productor consumidor
     sem_t *arrayMut, *arrayVacio, *arrayLleno;
-    int tipopipo;
-    if (registro.tipo == 'B')
+    int TipoPipo;
+    if (Registro.tipo == 'B')
     {
-        tipopipo = i;
+        TipoPipo = i;
     }
-    if (registro.tipo == 'D')
+    if (Registro.tipo == 'D')
     {
-        tipopipo = i + 1;
+        TipoPipo = i + 1;
     }
-    if (registro.tipo == 'S')
+    if (Registro.tipo == 'S')
     {
-        tipopipo = i + 2;
+        TipoPipo = i + 2;
     }
-    string mutex = "Mut" + nombre + to_string(tipopipo);
-    string vacio = "Vacio" + nombre + to_string(tipopipo);
-    string lleno = "Lleno" + nombre + to_string(tipopipo);
-    arrayMut = sem_open(mutex.c_str(), 0);
-    arrayVacio = sem_open(vacio.c_str(), 0);
-    arrayLleno = sem_open(lleno.c_str(), 0);
+    string Mutex = "Mut" + Nombre + to_string(TipoPipo);
+    string Vacio = "Vacio" + Nombre + to_string(TipoPipo);
+    string Lleno = "Lleno" + Nombre + to_string(TipoPipo);
+    arrayMut = sem_open(Mutex.c_str(), 0);
+    arrayVacio = sem_open(Vacio.c_str(), 0);
+    arrayLleno = sem_open(Lleno.c_str(), 0);
 
 
 
     // variable para recorrer la bandeja
-    int recorrido = 0;
+    int Recorrido = 0;
     //Semaforos
-    int posSem = q;
-    string s = to_string(posSem);
+    int PosSem = q;
+    string s = to_string(PosSem);
 
     // posición inicial de la bandeja según el tipo
-    int posBandeja = tipopipo - i;
-    char *pos = dire + sizeof(headerQ) + (posBandeja * sizeof(registrosalida) * q);
+    int PosBandeja = TipoPipo - i;
+    char *Pos = dire + sizeof(HeaderQ) + (PosBandeja * sizeof(RegistroSalida) * q);
 
     //hasta que no logre insertar intentar
-    // Espera la semaforo para insertar, vacio para saber si hay cupo y el mutex
+    // Espera la semaforo para insertar, Vacio para saber si hay cupo y el Mutex
     sem_wait(arrayVacio);
     sem_wait(arrayMut);
     // ciclo que avanza dentro de una bandeja usando n, recorre bandeja
-    while (recorrido < q)
+    while (Recorrido < q)
     {
         //posición en la bandeja
-        char *posn = (pos + (recorrido * sizeof(registrosalida)));
-        registrosalida *pRegistroSalida = (registrosalida *)posn;
+        char *PosN = (Pos + (Recorrido * sizeof(RegistroSalida)));
+        RegistroSalida *PRegistroSalida = (RegistroSalida *)PosN;
         //si logra insertar se sale
-        if (pRegistroSalida->cantidad <= 0)
+        if (PRegistroSalida->cantidad <= 0)
         {
-            pRegistroSalida->id = registro.id;
-            pRegistroSalida->tipo = registro.tipo;
-            pRegistroSalida->cantidad = registro.cantidad;
+            PRegistroSalida->id = Registro.id;
+            PRegistroSalida->tipo = Registro.tipo;
+            PRegistroSalida->cantidad = Registro.cantidad;
+            PRegistroSalida->bandeja = Registro.bandeja;
             sem_post(arrayMut);
             sem_post(arrayLleno);
             return EXIT_SUCCESS;
@@ -191,7 +192,7 @@ int ingresarBandejaQ( registrosalida registro, string nombre)
         // sino sigue avanzando
         else
         {
-            recorrido++;
+            Recorrido++;
         }
     }
 

@@ -8,15 +8,15 @@
 int crearSemaforo(string nombre)
 {
     char *dir = abrirMemoria(nombre);
-    struct header *pHeader = (struct header *)dir;
+    struct Header *PosHeader = (struct Header *)dir;
 
-    int i  = pHeader->i;
-    int ie = pHeader->ie;
-    int oe = pHeader->oe;
-    int q  = pHeader->q;
-    int b  = pHeader->b;
-    int d  = pHeader->d;
-    int s  = pHeader->s;
+    int i  = PosHeader->i;
+    int ie = PosHeader->ie;
+    int oe = PosHeader->oe;
+    int q  = PosHeader->q;
+    int b  = PosHeader->b;
+    int d  = PosHeader->d;
+    int s  = PosHeader->s;
 
     int totalsems = 4 + i;
     sem_t **arraySemMut = new sem_t *[totalsems];
@@ -24,56 +24,56 @@ int crearSemaforo(string nombre)
     sem_t **arraySemLleno = new sem_t *[totalsems];
     sem_t **arraySemReactivo = new sem_t *[3];
 
-    string mut = "Mut" + nombre;
-    string llen = "Lleno" + nombre;
-    string vac = "Vacio" + nombre;
-    string reactivo = "Reactivo" + nombre;
-    int cantidadReact = 0;
-    int espacios = ie;
+    string Mutix = "Mut" + nombre;
+    string Lleno = "Lleno" + nombre;
+    string Vacio = "Vacio" + nombre;
+    string Reactivo = "Reactivo" + nombre;
+    int CantidadReactivos = 0;
+    int Espacios = ie;
 
     for (int j = 0; j < totalsems; j++)
     {
         if (j == 0)
         {
-            cantidadReact = b;
+            CantidadReactivos = b;
         }
 
         else if (j == 1)
         {
-            cantidadReact = d;
+            CantidadReactivos = d;
         }
 
         else if (j == 2)
         {
-            cantidadReact = s;
+            CantidadReactivos = s;
         }
 
         else if (j >= i)
         {
-            espacios = oe;
+            Espacios = oe;
         }
 
         ostringstream namemut;
-        namemut << mut << j;
+        namemut << Mutix << j;
         string realNameMut(namemut.str());
         arraySemMut[j] = sem_open(realNameMut.c_str(), O_CREAT | O_EXCL, 0660, 1);
 
         ostringstream namellen;
-        namellen << llen << j;
+        namellen << Lleno << j;
         string realNameLlen(namellen.str());
         arraySemVacio[j] = sem_open(realNameLlen.c_str(), O_CREAT | O_EXCL, 0660, 0);
 
         ostringstream namevac;
-        namevac << vac << j;
+        namevac << Vacio << j;
         string realNameVac(namevac.str());
-        arraySemLleno[j] = sem_open(realNameVac.c_str(), O_CREAT | O_EXCL, 0660, espacios);
+        arraySemLleno[j] = sem_open(realNameVac.c_str(), O_CREAT | O_EXCL, 0660, Espacios);
 
         if (j < 3)
         {
             ostringstream namereact;
-            namereact << reactivo << j;
+            namereact << Reactivo << j;
             string realNameReact(namereact.str());
-            arraySemReactivo[j] = sem_open(realNameReact.c_str(), O_CREAT | O_EXCL, 0660, cantidadReact);
+            arraySemReactivo[j] = sem_open(realNameReact.c_str(), O_CREAT | O_EXCL, 0660, CantidadReactivos);
         }
 
         if (arraySemMut[j] == SEM_FAILED)

@@ -10,13 +10,13 @@
 #include <cerrno>
 #include <cstring>
 #include <unistd.h>
-#include "elementos.h"
+#include "Elementos.h"
 #include "AbrirMemoria.cpp"
 //Aca estamos los melos
 using namespace std;
 // función que le entregan un registro a guardar en la memoria compartida de nombre
 
-registrosalida retirarRegistro(int bandeja, string nombre)
+RegistroSalida retirarRegistro(int bandeja, string nombre)
 {
 
   //Llama los 3 semaforo requeridos, mutex, vacio lleno para el productor consumidor de las bandejas
@@ -33,7 +33,7 @@ registrosalida retirarRegistro(int bandeja, string nombre)
   char *dir = abrirMemoria(nombre);
   bool insertado = false;
 
-  header *pHeader = (header *)dir;
+  Header *pHeader = (Header *)dir;
 
   int i = pHeader->i;
   int ie = pHeader->ie;
@@ -46,10 +46,10 @@ registrosalida retirarRegistro(int bandeja, string nombre)
   string s = to_string(posSem);
 
   // posición inicial de la bandeja i
-  char *pos = (bandeja * ie * sizeof(registroentrada)) + dir + sizeof(header);
+  char *pos = (bandeja * ie * sizeof(RegistroEntrada)) + dir + sizeof(Header);
 
   //Crear el registro de salida que devolver
-  registrosalida registro;
+  RegistroSalida registro;
 
   //hasta que no logre insertar intentar
   // Espera la semaforo para insertar, vacio para saber si hay cupo y el mutex
@@ -60,8 +60,8 @@ registrosalida retirarRegistro(int bandeja, string nombre)
   while (recorrido < ie)
   {
     //posición en la bandeja
-    char *posn = (pos + (recorrido * sizeof(registroentrada)));
-    registroentrada *pRegistro = (registroentrada *)posn;
+    char *posn = (pos + (recorrido * sizeof(RegistroEntrada)));
+    RegistroEntrada *pRegistro = (RegistroEntrada *)posn;
 
     //si encuentro elemento a retirar
     if (pRegistro->cantidad > 0)
@@ -70,6 +70,7 @@ registrosalida retirarRegistro(int bandeja, string nombre)
       registro.cantidad = pRegistro->cantidad;
       registro.id = pRegistro->id;
       registro.tipo = pRegistro->tipo;
+      registro.bandeja = pRegistro->bandeja;
       
       //Pongo basura donde estaba
       pRegistro->bandeja = bandeja;

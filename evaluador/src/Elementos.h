@@ -2,7 +2,7 @@
 #include <semaphore.h>
 
 //Header ingresado por consola
-struct header{
+struct Header{
   int i;
   int ie;
   int oe;
@@ -14,13 +14,13 @@ struct header{
 };
 
 //
-struct headerQ{
+struct HeaderQ{
   int q;
   int i;
 };
 
 //Contenido de una posicion ie en la bandeja de entrada
-struct registroentrada {
+struct RegistroEntrada {
   int bandeja;
   int id;
   char tipo;
@@ -30,7 +30,7 @@ struct registroentrada {
 // externo -> nombrado
 // interno -> anonimo
 //Contenido de una posicion en la bandeja de salida.
-struct registrosalida{
+struct RegistroSalida{
   int id;
   int bandeja;
   char tipo;
