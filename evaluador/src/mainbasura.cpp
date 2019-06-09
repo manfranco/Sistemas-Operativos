@@ -1,7 +1,6 @@
 #include "IniciadorMemoria.cpp"
 #include "ManejoBandejaEntrada.cpp"
 #include "AbrirSemaforos.cpp"
-//#include "retirarElemento.cpp"
 #include "BandejasQ.cpp"
 #include "AbrirHilo.cpp"
 #include "ManejoOE.cpp"
