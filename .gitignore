@@ -1,5 +1,6 @@
 .vscode/*
 *.exe
+*.o
 .vscode/ipch/9faa8bb420ff3cd6/mmap_address.bin
 .vscode/ipch/cbd4962f35f2b0e0/mmap_address.bin
 .vscode/ipch/261bf94148f38edc/mmap_address.bin
