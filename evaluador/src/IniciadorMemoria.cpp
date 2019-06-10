@@ -16,7 +16,6 @@ using namespace std;
 int crearEspacio(string nombre, int i, int ie, int oe, int q, int b, int d, int s)
 {
 
-  // Abrir espacio de memoria para usar, usando el nombre n
   int fd = shm_open(nombre.c_str(), O_RDWR | O_CREAT | O_EXCL, 0660); 
 
   if (fd < 0)
@@ -25,7 +24,6 @@ int crearEspacio(string nombre, int i, int ie, int oe, int q, int b, int d, int 
          << errno << strerror(errno) << endl;
     exit(1);
   }
-  //convierte el tamaño del espacio de memoria compartida en bytes
   if (ftruncate(fd, sizeof( Header) != 0)) 
   {
     cerr << "Error creando la memoria compartida: 2"

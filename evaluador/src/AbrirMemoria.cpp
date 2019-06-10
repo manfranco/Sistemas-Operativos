@@ -11,7 +11,7 @@
 #include "Elementos.h"
 
 using namespace std;
-// Permite abrir el espacio de memoria compartida y devuelve la posición inicial
+
 char *abrirMemoria(string Nombre)
 {
     Nombre = "/" + Nombre;
@@ -41,9 +41,9 @@ char *abrirMemoria(string Nombre)
     int q = PosHeader->q;
 
     munmap((void *)PosHeader, sizeof(struct Header));
-    size_t memorysize =  sizeof(struct Header) + //Tamaño del Header 
-                        (sizeof(struct RegistroEntrada) * i * ie) + //Tamaño de la bandeja de entrada
-                        (sizeof(struct RegistroSalida) * oe); //Tamaño de la bandeja de salida
+    size_t memorysize =  sizeof(struct Header) + 
+                        (sizeof(struct RegistroEntrada) * i * ie) + 
+                        (sizeof(struct RegistroSalida) * oe); 
 
     if ((dir = (char *)(mmap(NULL, memorysize, PROT_READ | PROT_WRITE, MAP_SHARED,
                              fd, 0))) == MAP_FAILED)

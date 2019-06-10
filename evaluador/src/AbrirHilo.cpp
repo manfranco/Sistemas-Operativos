@@ -18,7 +18,6 @@
 
 using namespace std;
 
-// Estructura para  pasarle más de un argumento a un Hilo
 struct BanHilo
 {
     int Bandeja;
@@ -51,22 +50,19 @@ void *procesador(void *Bandeja_j)
 
 void crearHilo(string n)
 {
-    //accede a la memoria compartida
-    // posición inicial
+
     char *dir = abrirMemoria(n);
 
     struct Header *PosHeader = (struct Header *)dir;
 
     int i = PosHeader->i;
 
-    // Instancia los elementos que van a hacer parte de los hilos
-    // Instancia el arreglo de los hilos.
+
     pthread_t PosHilo[i];
     BanHilo Bande;
     Bande.Nombre = n;
     string NombreHilo = "Hilo" + n;
 
-    // Crea los hilos y les asigna la funcio
     for (int m = 0; m < i; ++m)
     {
         Bande.Bandeja = m;
@@ -77,13 +73,6 @@ void crearHilo(string n)
         sleep(0.1);
     }
 
-    //ESTO SE BORRA, SE DEJA AHORA POR DEBUGGER
-
-    // if (pthread_join(PosHilo[0], NULL))
-    // {
-    //     fprintf(stderr, "Error joining thread\n");
-    //     return;
-    // }
 
     return;
 }
@@ -108,22 +97,19 @@ void *procesadorOE(void *bandej)
 
 void crearHiloProcesadores(string n)
 {
-    //accede a la memoria compartida
-    // posición inicial
+
     char *dirq = abrirQ(n);
 
     HeaderQ *PosHeaderQ = (HeaderQ *)dirq;
 
     int q = PosHeaderQ->q;
 
-    // Instancia los elementos que van a hacer parte de los hilos
-    // Instancia el arreglo de los hilos.
+
     pthread_t HiloQ[q];
     BandejaProcesos Bande;
     Bande.Nombre = n;
     char TipoProceso = 'B';
     string NombreHilo = "Hilo" + n;
-    // Crea los hilos y les asigna la funcion
     for (int m = 0; m < 3; ++m)
     {
         if(m == 1) TipoProceso = 'D';
@@ -135,15 +121,6 @@ void crearHiloProcesadores(string n)
         pthread_create(&HiloQ[m], NULL, procesadorOE, (void *)&Bande);
         sleep(1);
     }
-
-
-    //ESTO SE BORRA, SE DEJA AHORA POR DEBUGGER
-
-    // if (pthread_join(hiloP[0], NULL))
-    // {
-    //     fprintf(stderr, "Error joining thread\n");
-    //     return;
-    // }
 
     return;
 }

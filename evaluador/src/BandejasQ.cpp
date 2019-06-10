@@ -16,8 +16,6 @@ using namespace std;
 
 int crearQ(string nombre)
 {
-    //accede a la memoria compartida
-    // posición inicial
     char *dir = abrirMemoria(nombre);
     Header *pHeader = (Header *)dir;
     int q = pHeader->q;
@@ -26,7 +24,6 @@ int crearQ(string nombre)
     int d = pHeader->d;
     int s = pHeader->s;
 
-    // Abrir espacio de memoria para usar, usando el nombre n
     nombre = nombre + "Q";
 
     int fd = shm_open(nombre.c_str(), O_RDWR | O_CREAT | O_EXCL, 0660);
@@ -36,7 +33,6 @@ int crearQ(string nombre)
              << errno << strerror(errno) << endl;
         exit(1);
     }
-    //Acorta la region de memoria, de acuerdo al tamaño requerido
     if (ftruncate(fd, sizeof(HeaderQ) != 0))
     {
         cerr << "Error creando la memoria compartida: Q2"
@@ -63,7 +59,6 @@ int crearQ(string nombre)
     return EXIT_SUCCESS;
 }
 
-// Permite abrir el espacio de memoria compartida Q y devuelve la posición inicial
 char *abrirQ(string nombre)
 {
     nombre = "/" + nombre + "Q";
@@ -110,7 +105,6 @@ int recorrerQ(string nombre)
     int temp2 = 0;
     int recorrido = 0;
 
-    // posición inicial
     char *dire = abrirQ(nombre);
     HeaderQ *pHeaderQ = (HeaderQ *)dire;
     int q = pHeaderQ->q;
@@ -138,8 +132,7 @@ int recorrerQ(string nombre)
 
 int ingresarBandejaQ(RegistroSalida registro, string nombre)
 {
-    //accede a la memoria compartida
-    // posición inicial
+
     char *dire = abrirQ(nombre);
     HeaderQ *pHeaderQ = (HeaderQ *)dire;
 
@@ -149,7 +142,6 @@ int ingresarBandejaQ(RegistroSalida registro, string nombre)
     int d = pHeaderQ->d;
     int s = pHeaderQ->s;
 
-    //Llama los 3 semaforo requeridos, mutex, vacio lleno para el productor consumidor
     sem_t *arrayMut, *arrayVacio, *arrayLleno;
     int tipopipo;
     if (registro.tipo == 'B')
@@ -171,37 +163,32 @@ int ingresarBandejaQ(RegistroSalida registro, string nombre)
     arrayVacio = sem_open(vacio.c_str(), 0);
     arrayLleno = sem_open(lleno.c_str(), 0);
 
-    // variable para recorrer la bandeja
     int recorrido = 0;
 
-    // posición inicial de la bandeja según el tipo
     int posBandeja = tipopipo - i;
     char *pos = dire + sizeof(HeaderQ) + (posBandeja * sizeof(RegistroSalida) * q);
 
-    //hasta que no logre insertar intentar
-    // Espera la semaforo para insertar, vacio para saber si hay cupo y el mutex
-    //Soy consumidor
     sem_wait(arrayVacio);
     sem_wait(arrayMut);
-    // ciclo que avanza dentro de una bandeja usando n, recorre bandeja
+
     while (recorrido < q)
     {
-        //posición en la bandeja
+        
         char *posn = (pos + (recorrido * sizeof(RegistroSalida)));
         RegistroSalida *pRegistroSalida = (RegistroSalida *)posn;
-        //si logra insertar se sale
+
         if (pRegistroSalida->cantidad <= 0)
         {
             pRegistroSalida->id = registro.id;
             pRegistroSalida->tipo = registro.tipo;
             pRegistroSalida->cantidad = registro.cantidad;
             pRegistroSalida->bandeja = registro.bandeja;
-            //Soy productor
+
             sem_post(arrayMut);
             sem_post(arrayLleno);
             return EXIT_SUCCESS;
         }
-        // sino sigue avanzando
+
         else
         {
             recorrido++;
@@ -211,14 +198,9 @@ int ingresarBandejaQ(RegistroSalida registro, string nombre)
     return 1;
 }
 
-// función que le entregan un registro a guardar en la memoria compartida de nombre
-
-
-
 int IngresarReactivo(string nombre, int cantidad, char tipo)
 {
-    //accede a la memoria compartida
-    // posición inicial
+
     char *dirQ = abrirQ(nombre);
     HeaderQ *pHeaderQ = (HeaderQ *)dirQ;
 

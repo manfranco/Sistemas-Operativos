@@ -1,7 +1,6 @@
 #pragma once
 #include <semaphore.h>
 
-//Header ingresado por consola
 struct Header{
   int i;
   int ie;
@@ -14,7 +13,6 @@ struct Header{
   int contador;
 };
 
-//
 struct HeaderQ{
   int q;
   int i;
@@ -23,7 +21,6 @@ struct HeaderQ{
   int s;
 };
 
-//Contenido de una posicion ie en la bandeja de entrada
 struct RegistroEntrada {
   int bandeja;
   int id;
@@ -32,9 +29,6 @@ struct RegistroEntrada {
   int time;
 };
 
-// externo -> nombrado
-// interno -> anonimo
-//Contenido de una posicion en la bandeja de salida.
 struct RegistroSalida{
   int id;
   int bandeja;
