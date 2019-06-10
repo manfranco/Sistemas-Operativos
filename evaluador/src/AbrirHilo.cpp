@@ -13,6 +13,8 @@
 #include "AbrirMemoria.cpp"
 #include "BandejasQ.cpp"
 #include "ManejoOE.cpp"
+#include "RetirarElemento.cpp"
+#include "RetiroBandejaQ.cpp"
 
 using namespace std;
 

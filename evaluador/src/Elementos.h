@@ -11,6 +11,7 @@ struct Header{
   int d;
   int s;
   char n[30];
+  int contador;
 };
 
 //
@@ -28,6 +29,7 @@ struct RegistroEntrada {
   int id;
   char tipo;
   int cantidad;
+  int time;
 };
 
 // externo -> nombrado
@@ -38,4 +40,6 @@ struct RegistroSalida{
   int bandeja;
   char tipo;
   int cantidad;
+  int time;
+  char resultado;
 };
