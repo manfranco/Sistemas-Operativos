@@ -9,7 +9,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include "Elementos.h"
+#include "../include/Elementos.h"
 #include "AbrirMemoria.cpp"
 #include "BandejasQ.cpp"
 #include "ManejoOE.cpp"

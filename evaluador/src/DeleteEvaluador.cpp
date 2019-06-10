@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <semaphore.h>
-#include "Elementos.h"
+#include "../include/Elementos.h"
 #include "AbrirSemaforos.cpp"
 using namespace std;
 

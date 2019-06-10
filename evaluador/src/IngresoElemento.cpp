@@ -10,7 +10,7 @@
 #include <cerrno>
 #include <cstring>
 #include <unistd.h>
-#include "Elementos.h"
+#include "../include/Elementos.h"
 #include "AbrirMemoria.cpp"
 
 using namespace std;
