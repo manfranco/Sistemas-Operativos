@@ -19,44 +19,44 @@ int ingresarSalida(RegistroSalida registro, string nombre)
 {
 
   char *dir = abrirMemoria(nombre);
-  Header *pHeader = (Header *)dir;
-  int i = pHeader->i;
-  int oe = pHeader->oe;
-  int ie = pHeader->ie;
+  Header *PosHeader = (Header *)dir;
+  int i = PosHeader->i;
+  int oe = PosHeader->oe;
+  int ie = PosHeader->ie;
 
   sem_t *arrayMut, *arrayVacio, *arrayLleno;
   int pos_sem = i + 3;
-  string mutex = "Mut" + nombre + to_string(pos_sem);
-  string vacio = "Vacio" + nombre + to_string(pos_sem);
-  string lleno = "Lleno" + nombre + to_string(pos_sem);
-  arrayMut = sem_open(mutex.c_str(), 0);
-  arrayVacio = sem_open(vacio.c_str(), 0);
-  arrayLleno = sem_open(lleno.c_str(), 0);
-  int recorrido = 0;
+  string Mutex = "Mut" + nombre + to_string(pos_sem);
+  string Vacio = "Vacio" + nombre + to_string(pos_sem);
+  string Lleno = "Lleno" + nombre + to_string(pos_sem);
+  arrayMut = sem_open(Mutex.c_str(), 0);
+  arrayVacio = sem_open(Vacio.c_str(), 0);
+  arrayLleno = sem_open(Lleno.c_str(), 0);
+  int Recorrido = 0;
 
   char *pos = (i * ie * sizeof(RegistroEntrada)) + dir + sizeof(Header);
 
   sem_wait(arrayVacio);
   sem_wait(arrayMut);
 
-  while (recorrido < oe)
+  while (Recorrido < oe)
   {
-    char *posn = (pos + (recorrido * sizeof(RegistroSalida)));
-    RegistroSalida *pRegistro = (RegistroSalida *)posn;
+    char *PosN = (pos + (Recorrido * sizeof(RegistroSalida)));
+    RegistroSalida *PosRegistro = (RegistroSalida *)PosN;
 
-    if (pRegistro->cantidad <= 0)
+    if (PosRegistro->cantidad <= 0)
     {
-      pRegistro->id = registro.id;
-      pRegistro->tipo = registro.tipo;
-      pRegistro->cantidad = registro.cantidad;
-      pRegistro->bandeja = registro.bandeja;
+      PosRegistro->id = registro.id;
+      PosRegistro->tipo = registro.tipo;
+      PosRegistro->cantidad = registro.cantidad;
+      PosRegistro->bandeja = registro.bandeja;
       sem_post(arrayMut);
       sem_post(arrayLleno);
       return EXIT_SUCCESS;
     }
     else
     {
-      recorrido++;
+      Recorrido++;
     }
   }
 
@@ -65,22 +65,22 @@ int ingresarSalida(RegistroSalida registro, string nombre)
 
 int recorrerOE(string nombre)
 {
-  int temp1 = 0;
+  int Temporal1 = 0;
 
   char *dir = abrirMemoria(nombre);
-  Header *pHeader = (Header *)dir;
+  Header *PosHeader = (Header *)dir;
 
-  int i = pHeader->i;
-  int ie = pHeader->ie;
-  int oe = pHeader->oe;
+  int i = PosHeader->i;
+  int ie = PosHeader->ie;
+  int oe = PosHeader->oe;
   char *pos = (i * ie * sizeof(RegistroEntrada)) + dir + sizeof(Header);
 
-  while (temp1 < oe)
+  while (Temporal1 < oe)
   {
-    char *posn = (pos + (temp1 * sizeof(RegistroSalida)));
-    RegistroSalida *pRegistro = (RegistroSalida *)posn;
-    cout << pRegistro->id << pRegistro->tipo << pRegistro->cantidad << endl;
-    temp1++;
+    char *PosN = (pos + (Temporal1 * sizeof(RegistroSalida)));
+    RegistroSalida *PosRegistro = (RegistroSalida *)PosN;
+    cout << PosRegistro->id << PosRegistro->tipo << PosRegistro->cantidad << endl;
+    Temporal1++;
   }
 
   return 0;

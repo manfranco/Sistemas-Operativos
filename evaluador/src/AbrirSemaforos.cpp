@@ -78,22 +78,22 @@ int crearSemaforo(string nombre)
 
         if (arraySemMut[j] == SEM_FAILED)
         {
-            cerr << "Error creando los semaforos 'Mut'" << endl;
+            cerr << "Error al crear semaforos 'Mut'" << endl;
         }
         if (arraySemVacio[j] == SEM_FAILED)
         {
-            cerr << "Error creando los semaforos 'Vacio'" << endl;
+            cerr << "Error al crear semaforos 'Vacio'" << endl;
         }
         if (arraySemLleno[j] == SEM_FAILED)
         {
-            cerr << "Error creando los semaforos 'Lleno'" << endl;
+            cerr << "Error al crear semaforos 'Lleno'" << endl;
         }
 
         if (j < 3)
         {
             if (arraySemReactivo[j] == SEM_FAILED)
             {
-                cerr << "Error creando los semaforos 'Reactivo'" << endl;
+                cerr << "Error al crear semaforos 'Reactivo'" << endl;
             }
         }
     }

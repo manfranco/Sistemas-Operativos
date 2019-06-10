@@ -43,7 +43,7 @@ void *procesador(void *Bandeja_j)
 
     }
 
-    cout << "Sali?" << endl;
+    cout << "Salida" << endl;
 
     pthread_exit(NULL);
 }
@@ -90,7 +90,7 @@ void *procesadorOE(void *bandej)
         ingresarSalida(Registro, NombreMemoria2);
     }
 
-    cout << "Sali?" << endl;
+    cout << "Salida" << endl;
 
     pthread_exit(NULL);
 }

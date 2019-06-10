@@ -18,7 +18,7 @@ char *abrirMemoria(string Nombre)
     int fd = shm_open(Nombre.c_str(), O_RDWR, 0660);
     if (fd < 0)
     {
-        cerr << "Error abriendo la memoria compartida: 4 "
+        cerr << "Error al abrir memoria compartida: 4 "
              << errno << strerror(errno) << endl;
         exit(1);
     }
@@ -28,7 +28,7 @@ char *abrirMemoria(string Nombre)
     if ((dir = (char *)(mmap(NULL, sizeof(struct Header), PROT_READ | PROT_WRITE, MAP_SHARED,
                              fd, 0))) == MAP_FAILED)
     {
-        cerr << "Error mapeando la memoria compartida: 5"
+        cerr << "Error intentando mapear la memoria compartida: 5"
              << errno << strerror(errno) << endl;
         exit(1);
     }
@@ -48,7 +48,7 @@ char *abrirMemoria(string Nombre)
     if ((dir = (char *)(mmap(NULL, memorysize, PROT_READ | PROT_WRITE, MAP_SHARED,
                              fd, 0))) == MAP_FAILED)
     {
-        cerr << "Error mapeando la memoria compartida: 6"
+        cerr << "Error intentando mapear memoria compartida: 6"
              << errno << strerror(errno) << endl;
         exit(1);
     }

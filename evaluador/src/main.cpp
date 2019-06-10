@@ -35,8 +35,8 @@ int main(int argc, char* argv[])
             bool exists = find(begin(Argumentos), end(Argumentos), t_argument) != end(Argumentos);
 
             if (!exists){
-                cout << "Argumento invalido" << endl;
-                cout << "El argumento invalido es: " << argv[x] << endl;
+                cout << "Error en argumento" << endl;
+                cout << "El Error en argumento es: " << argv[x] << endl;
                 return 1;
             }
 
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
                 ++x;
 
                 if(i == 0){
-                    cout << "Valor no autorizado para i" << endl;
+                    cout << "Valor inválido para i" << endl;
                     return 1;            
                 }
             }
@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
                 ++x;
 
                 if(ie == 0){
-                    cout << "Valor no autorizado para ie" << endl;
+                    cout << "Valor inválido para ie" << endl;
                     return 1;            
                 }
             }
@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
                 ++x;
 
                 if(oe == 0){
-                    cout << "Valor no autorizado para oe" << endl;
+                    cout << "Valor inválido para oe" << endl;
                     return 1;            
                 }
             }
@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
                 ++x;
 
                 if(d == 0 || d > 100  || 0 > d){
-                    cout << "Valor no autorizado para d" << endl;
+                    cout << "Valor inválido para d" << endl;
                     return 1;            
                 }
             }      
@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
                 ++x;
 
                 if(b == 0 || b > 100 || 0 > b){
-                    cout << "Valor no autorizado para b" << endl;
+                    cout << "Valor inválido para b" << endl;
                     return 1;            
                 }
             }
@@ -101,7 +101,7 @@ int main(int argc, char* argv[])
                 ++x;
 
                 if(s == 0 || s > 100 || 0 > s){
-                    cout << "Valor no autorizado para s" << endl;
+                    cout << "Valor inválido para s" << endl;
                     return 1;            
                 }
             }
@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
                 ++x;
 
                 if(q == 0){
-                    cout << "Valor no autorizado para q" << endl;
+                    cout << "Valor inválido para q" << endl;
                     return 1;            
                 }
             }                                                                
@@ -128,9 +128,6 @@ int main(int argc, char* argv[])
 
     } else if(!strcmp(argv[1], "reg")) {
 
-        // Crea un objeto reg, y crea una var Escuchando para el ciclo donde escucha al usuario.
-        // Si la flag -n es correcta, asigna la memoria a la varible NombreMemoria
-        // En caso contrario, cierra el programa.
         RegistroEntrada Registro;       
         int id;
         bool Escuchando = true;
@@ -147,26 +144,23 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        // Verifica si el argumento 4 es '-' para entrar en modo interactivo.
         if(!strcmp(argv[4], "-"))
         {
 
-            cout << "Ingresando a modo interactivo" << endl;            
+            cout << "bienvenido a la opcion interactiva" << endl;            
             string EntradaUsuario;
 
-            // Ciclo donde se escucha hasta que el usuario ingrese 'exit'
             while(Escuchando)
             {
                 cout << ">";
                 getline(cin, EntradaUsuario);
-                cout << "El usuario ingreso: ";
+                cout << "La entrada fue: ";
                 cout << EntradaUsuario << endl;
 
                 if(EntradaUsuario == "exit"){
                     Escuchando = false;
                 }
 
-                // Se parsea el input del usuario.
                 string *EntradaAnalizada = parser(EntradaUsuario);
 
                 Registro.bandeja = stoi(EntradaAnalizada[0]);
@@ -179,7 +173,7 @@ int main(int argc, char* argv[])
                    Repetido = find(begin(IDExistentes), end(IDExistentes), id) != end(IDExistentes);
 
                    if (!Repetido){
-                    cout << "Es unico" << endl;
+                    cout << "ingreso unico" << endl;
                     IDExistentes.insert(begin(IDExistentes), id);
                     isCiclo = false;
                    }
@@ -191,28 +185,23 @@ int main(int argc, char* argv[])
 
             }
 
-        // Si el cuarto argumento es un path.
         } else {
             
-            // Forma estandar de abrir files.
             string NombreFichero(argv[4]);
             ifstream file(NombreFichero);
             if(file.fail())
             {
-                cout << "No se puede abrir el archivo" << endl;
+                cout << "Error en lectura de archivo" << endl;
             } else {
-                cout << "El archivo se abrio con exito" << endl;
+                cout << "lectura exitosa" << endl;
             }
 
-            // Forma estandar de recibir lineas de texto de un fichero.
             for(string line; getline(file, line); )
             {
                 cout << line << endl;
 
-                // Se parsea el input del fichero.
                 string *args = parser(line);
 
-                // Se llama al metodo agregar para ingresar en la memoria el Registro.
                 Registro.bandeja = stoi(args[0]);
                 Registro.bandeja = args[1][0];
                 Registro.cantidad = stoi(args[2]);
@@ -222,7 +211,7 @@ int main(int argc, char* argv[])
                    Repetido = find(begin(IDExistentes), end(IDExistentes), id) != end(IDExistentes);
 
                    if (!Repetido){
-                    cout << "Es unico" << endl;
+                    cout << "unico" << endl;
                     IDExistentes.insert(begin(IDExistentes), id);
                     isCiclo = false;
                    }
@@ -235,11 +224,6 @@ int main(int argc, char* argv[])
         }
 
     } else if(!strcmp(argv[1], "ctrl")) {
-
-        // Crea un objeto ctrl, y crea una var Escuchando para el ciclo donde escucha los subcomandos.
-        // Si la flag -n es correcta, asigna la memoria a la varible NombreMemoria
-        // En caso contrario, cierra el programa.
-        // La string command almacena el comando del usuario.
 
         string command;
         bool Escuchando = true;
@@ -259,11 +243,8 @@ int main(int argc, char* argv[])
             cout << ">";
             getline(cin, command);
 
-            // Se parsea el comando introducido por el usuario.
             string *SegundaEntrada = parser(command);
 
-            // Si el comando es 'list', se llama el metodo list junto con el nombre del espacio de memoria
-            // y el comando que lo acompana.
             if(SegundaEntrada[0] == "list"){
                 if(SegundaEntrada[1] == "processing"){
 
@@ -297,8 +278,6 @@ int main(int argc, char* argv[])
                     retornarContador(NombreMemoria);
                 }
 
-
-            // Si el comando es 'update', asigna las siguientes variables y las manda al metodo update.
             } else if(SegundaEntrada[0] == "update"){
                 char Tipo = SegundaEntrada[1][0];
                 int Valor = stoi(SegundaEntrada[2].c_str());
@@ -307,11 +286,8 @@ int main(int argc, char* argv[])
             } 
         }
 
-    // Verifica si el argumento principal es rep
     } else if(!strcmp(argv[1], "rep")){
 
-        // Crea un objeto rep. Si la flag -n es correcta, asigna la memoria a la varible NombreMemoria
-        // En caso contrario, cierra el programa.
 
         if(!strcmp(argv[2], "-n"))
         {
@@ -322,21 +298,14 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        // Revisa si el comando '-i' y manda al metodo mensajei junto con la cantidad de segundos.
         if(!strcmp(argv[4], "-i")){
         
-
-        // Revisa si el comando '-m' y manda al metodo mensajej junto con la cantidad de examenes.
         } else if(!strcmp(argv[4], "-m")){
          
         }
 
-    // Revisa si el comando principal es stop.
     } else if(!strcmp(argv[1], "stop")){
         
-        // Crea un objeto stop. Si la flag -n es correcta, asigna la memoria a la varible NombreMemoria
-        // En caso contrario, cierra el programa.
-
         if(!strcmp(argv[2], "-n"))
         {
             string Temp(argv[3]);
@@ -347,11 +316,9 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        // Recibe el nombre de la memoria que va borrar.
         stop(NombreMemoria);
 
     }
-
 
     return 0;
 }

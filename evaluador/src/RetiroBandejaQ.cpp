@@ -26,37 +26,37 @@ RegistroSalida retirarRegistroDeQ(char tipo, string Nombre)
     int s = PosHeaderQ->s;
 
     sem_t *arrayMut, *arrayVacio, *arrayLleno, *arrayReact;
-    int Pos_Tipo;
-    int Pos_BandejaQ;
+    int PosTipo;
+    int PosBandejaQ;
     if (tipo == 'B')
     {
-        Pos_Tipo = i;
-        Pos_BandejaQ = 0;
+        PosTipo = i;
+        PosBandejaQ = 0;
     }
     if (tipo == 'D')
     {
-        Pos_Tipo = i + 1;
-        Pos_BandejaQ = 1;
+        PosTipo = i + 1;
+        PosBandejaQ = 1;
     }
     if (tipo == 'S')
     {
-        Pos_Tipo = i + 2;
-        Pos_BandejaQ = 2;
+        PosTipo = i + 2;
+        PosBandejaQ = 2;
     }
 
-    string mutex = "Mut" + Nombre + to_string(Pos_Tipo);
-    string vacio = "Vacio" + Nombre + to_string(Pos_Tipo);
-    string lleno = "Lleno" + Nombre + to_string(Pos_Tipo);
-    string reactivo = "Reactivo" + Nombre + to_string(Pos_BandejaQ);
+    string Mutex = "Mut" + Nombre + to_string(PosTipo);
+    string Vacio = "Vacio" + Nombre + to_string(PosTipo);
+    string Lleno = "Lleno" + Nombre + to_string(PosTipo);
+    string Reactivo = "Reactivo" + Nombre + to_string(PosBandejaQ);
 
-    arrayMut = sem_open(mutex.c_str(), 0);
-    arrayVacio = sem_open(vacio.c_str(), 0);
-    arrayLleno = sem_open(lleno.c_str(), 0);
-    arrayReact = sem_open(reactivo.c_str(), 0);
+    arrayMut = sem_open(Mutex.c_str(), 0);
+    arrayVacio = sem_open(Vacio.c_str(), 0);
+    arrayLleno = sem_open(Lleno.c_str(), 0);
+    arrayReact = sem_open(Reactivo.c_str(), 0);
 
     int Recorrido = 0;
 
-    char *Pos = DirQ + sizeof(HeaderQ) + (Pos_BandejaQ * q * sizeof(RegistroSalida));
+    char *Pos = DirQ + sizeof(HeaderQ) + (PosBandejaQ * q * sizeof(RegistroSalida));
 
     RegistroSalida Registro;
 

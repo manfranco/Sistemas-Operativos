@@ -14,28 +14,28 @@
 
 using namespace std;
 
-int crearQ(string nombre)
+int crearQ(string Nombre)
 {
-    char *dir = abrirMemoria(nombre);
-    Header *pHeader = (Header *)dir;
-    int q = pHeader->q;
-    int i = pHeader->i;
-    int b = pHeader->b;
-    int d = pHeader->d;
-    int s = pHeader->s;
+    char *dir = abrirMemoria(Nombre);
+    Header *PosHeader = (Header *)dir;
+    int q = PosHeader->q;
+    int i = PosHeader->i;
+    int b = PosHeader->b;
+    int d = PosHeader->d;
+    int s = PosHeader->s;
 
-    nombre = nombre + "Q";
+    Nombre = Nombre + "Q";
 
-    int fd = shm_open(nombre.c_str(), O_RDWR | O_CREAT | O_EXCL, 0660);
+    int fd = shm_open(Nombre.c_str(), O_RDWR | O_CREAT | O_EXCL, 0660);
     if (fd < 0)
     {
-        cerr << "Error creando la memoria compartida: Q1"
+        cerr << "Error creando la memoria compartida"
              << errno << strerror(errno) << endl;
         exit(1);
     }
     if (ftruncate(fd, sizeof(HeaderQ) != 0))
     {
-        cerr << "Error creando la memoria compartida: Q2"
+        cerr << "Error creando la memoria compartida"
              << errno << strerror(errno) << endl;
         exit(1);
     }
@@ -43,29 +43,29 @@ int crearQ(string nombre)
 
     if ((dirQ = (char *)mmap(NULL, sizeof(HeaderQ), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0)) == MAP_FAILED)
     {
-        cerr << "Error mapeando la memoria compartida: Q3"
+        cerr << "Error mapeando la memoria compartida"
              << errno << strerror(errno) << endl;
         exit(1);
     }
 
-    HeaderQ *pHeaderQ = (HeaderQ *)dirQ;
-    pHeaderQ->q = q;
-    pHeaderQ->i = i;
-    pHeaderQ->b = b;
-    pHeaderQ->d = d;
-    pHeaderQ->s = s;
+    HeaderQ *PosHeaderQ = (HeaderQ *)dirQ;
+    PosHeaderQ->q = q;
+    PosHeaderQ->i = i;
+    PosHeaderQ->b = b;
+    PosHeaderQ->d = d;
+    PosHeaderQ->s = s;
 
     close(fd);
     return EXIT_SUCCESS;
 }
 
-char *abrirQ(string nombre)
+char *abrirQ(string Nombre)
 {
-    nombre = "/" + nombre + "Q";
-    int fd = shm_open(nombre.c_str(), O_RDWR, 0660);
+    Nombre = "/" + Nombre + "Q";
+    int fd = shm_open(Nombre.c_str(), O_RDWR, 0660);
     if (fd < 0)
     {
-        cerr << "Error abriendo la memoria compartida: Q4"
+        cerr << "Error abriendo la memoria compartida"
              << errno << strerror(errno) << endl;
         exit(1);
     }
@@ -74,115 +74,115 @@ char *abrirQ(string nombre)
 
     if ((dirQ = (char *)(mmap(NULL, sizeof(HeaderQ), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0))) == MAP_FAILED)
     {
-        cerr << "Error mapeando la memoria compartida: Q5"
+        cerr << "Error mapeando la memoria compartida"
              << errno << strerror(errno) << endl;
         exit(1);
     }
 
-    HeaderQ *pHeaderQ = (HeaderQ *)dirQ;
-    int q = pHeaderQ->q;
-    int i = pHeaderQ->i;
-    int b = pHeaderQ->b;
-    int d = pHeaderQ->d;
-    int s = pHeaderQ->s;
+    HeaderQ *PosHeaderQ = (HeaderQ *)dirQ;
+    int q = PosHeaderQ->q;
+    int i = PosHeaderQ->i;
+    int b = PosHeaderQ->b;
+    int d = PosHeaderQ->d;
+    int s = PosHeaderQ->s;
 
-    munmap((void *)pHeaderQ, sizeof(HeaderQ));
-    size_t memorysize = sizeof(HeaderQ) + (sizeof(RegistroSalida) * q * 3);
+    munmap((void *)PosHeaderQ, sizeof(HeaderQ));
+    size_t TamMem = sizeof(HeaderQ) + (sizeof(RegistroSalida) * q * 3);
 
-    if ((dirQ = (char *)(mmap(NULL, memorysize, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0))) == MAP_FAILED)
+    if ((dirQ = (char *)(mmap(NULL, TamMem, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0))) == MAP_FAILED)
     {
-        cerr << "Error mapeando la memoria compartida: Q6"
+        cerr << "Error mapeando la memoria compartida"
              << errno << strerror(errno) << endl;
         exit(1);
     }
     return dirQ;
 }
 
-int recorrerQ(string nombre)
+int recorrerQ(string Nombre)
 {
 
-    int temp1 = 0;
-    int temp2 = 0;
-    int recorrido = 0;
+    int Temporal1 = 0;
+    int Temporal2 = 0;
+    int Recorrido = 0;
 
-    char *dire = abrirQ(nombre);
-    HeaderQ *pHeaderQ = (HeaderQ *)dire;
-    int q = pHeaderQ->q;
-    int b = pHeaderQ->b;
-    int d = pHeaderQ->d;
-    int s = pHeaderQ->s;
+    char *Direccion = abrirQ(Nombre);
+    HeaderQ *PosHeaderQ = (HeaderQ *)Direccion;
+    int q = PosHeaderQ->q;
+    int b = PosHeaderQ->b;
+    int d = PosHeaderQ->d;
+    int s = PosHeaderQ->s;
 
-    while (recorrido < 3)
+    while (Recorrido < 3)
     {
-        char *pos = dire + sizeof(HeaderQ) + (recorrido * sizeof(RegistroSalida) * q);
+        char *Pos = Direccion + sizeof(HeaderQ) + (Recorrido * sizeof(RegistroSalida) * q);
 
-        while (temp2 < q)
+        while (Temporal2 < q)
         {
-            char *posn = pos + (temp2 * sizeof(RegistroSalida));
-            RegistroSalida *pRegistroSalida = (RegistroSalida *)posn;
-            cout << pRegistroSalida->id << pRegistroSalida->tipo << pRegistroSalida->cantidad << endl;
-            temp2++;
+            char *posn = Pos + (Temporal2 * sizeof(RegistroSalida));
+            RegistroSalida *PosRegistroSalida = (RegistroSalida *)posn;
+            cout << PosRegistroSalida->id << PosRegistroSalida->tipo << PosRegistroSalida->cantidad << endl;
+            Temporal2++;
         }
 
-        recorrido++;
-        temp2 = 0;
+        Recorrido++;
+        Temporal2 = 0;
     }
     return 0;
 }
 
-int ingresarBandejaQ(RegistroSalida registro, string nombre)
+int ingresarBandejaQ(RegistroSalida registro, string Nombre)
 {
 
-    char *dire = abrirQ(nombre);
-    HeaderQ *pHeaderQ = (HeaderQ *)dire;
+    char *Direccion = abrirQ(Nombre);
+    HeaderQ *PosHeaderQ = (HeaderQ *)Direccion;
 
-    int q = pHeaderQ->q;
-    int i = pHeaderQ->i;
-    int b = pHeaderQ->b;
-    int d = pHeaderQ->d;
-    int s = pHeaderQ->s;
+    int q = PosHeaderQ->q;
+    int i = PosHeaderQ->i;
+    int b = PosHeaderQ->b;
+    int d = PosHeaderQ->d;
+    int s = PosHeaderQ->s;
 
     sem_t *arrayMut, *arrayVacio, *arrayLleno;
-    int tipopipo;
+    int Pipo;
     if (registro.tipo == 'B')
     {
-        tipopipo = i;
+        Pipo = i;
     }
     if (registro.tipo == 'D')
     {
-        tipopipo = i + 1;
+        Pipo = i + 1;
     }
     if (registro.tipo == 'S')
     {
-        tipopipo = i + 2;
+        Pipo = i + 2;
     }
-    string mutex = "Mut" + nombre + to_string(tipopipo);
-    string vacio = "Vacio" + nombre + to_string(tipopipo);
-    string lleno = "Lleno" + nombre + to_string(tipopipo);
-    arrayMut = sem_open(mutex.c_str(), 0);
-    arrayVacio = sem_open(vacio.c_str(), 0);
-    arrayLleno = sem_open(lleno.c_str(), 0);
+    string Mutex = "Mut" + Nombre + to_string(Pipo);
+    string Vacio = "Vacio" + Nombre + to_string(Pipo);
+    string Lleno = "Lleno" + Nombre + to_string(Pipo);
+    arrayMut = sem_open(Mutex.c_str(), 0);
+    arrayVacio = sem_open(Vacio.c_str(), 0);
+    arrayLleno = sem_open(Lleno.c_str(), 0);
 
-    int recorrido = 0;
+    int Recorrido = 0;
 
-    int posBandeja = tipopipo - i;
-    char *pos = dire + sizeof(HeaderQ) + (posBandeja * sizeof(RegistroSalida) * q);
+    int posBandeja = Pipo - i;
+    char *Pos = Direccion + sizeof(HeaderQ) + (posBandeja * sizeof(RegistroSalida) * q);
 
     sem_wait(arrayVacio);
     sem_wait(arrayMut);
 
-    while (recorrido < q)
+    while (Recorrido < q)
     {
         
-        char *posn = (pos + (recorrido * sizeof(RegistroSalida)));
-        RegistroSalida *pRegistroSalida = (RegistroSalida *)posn;
+        char *posn = (Pos + (Recorrido * sizeof(RegistroSalida)));
+        RegistroSalida *PosRegistroSalida = (RegistroSalida *)posn;
 
-        if (pRegistroSalida->cantidad <= 0)
+        if (PosRegistroSalida->cantidad <= 0)
         {
-            pRegistroSalida->id = registro.id;
-            pRegistroSalida->tipo = registro.tipo;
-            pRegistroSalida->cantidad = registro.cantidad;
-            pRegistroSalida->bandeja = registro.bandeja;
+            PosRegistroSalida->id = registro.id;
+            PosRegistroSalida->tipo = registro.tipo;
+            PosRegistroSalida->cantidad = registro.cantidad;
+            PosRegistroSalida->bandeja = registro.bandeja;
 
             sem_post(arrayMut);
             sem_post(arrayLleno);
@@ -191,61 +191,61 @@ int ingresarBandejaQ(RegistroSalida registro, string nombre)
 
         else
         {
-            recorrido++;
+            Recorrido++;
         }
     }
 
     return 1;
 }
 
-int IngresarReactivo(string nombre, int cantidad, char tipo)
+int IngresarReactivo(string Nombre, int cantidad, char tipo)
 {
 
-    char *dirQ = abrirQ(nombre);
-    HeaderQ *pHeaderQ = (HeaderQ *)dirQ;
+    char *dirQ = abrirQ(Nombre);
+    HeaderQ *PosHeaderQ = (HeaderQ *)dirQ;
 
-    int b = pHeaderQ->b;
-    int d = pHeaderQ->d;
-    int s = pHeaderQ->s;
-    int i = pHeaderQ->i;
+    int b = PosHeaderQ->b;
+    int d = PosHeaderQ->d;
+    int s = PosHeaderQ->s;
+    int i = PosHeaderQ->i;
 
     sem_t *arrayMut;
-    int pos_tipo;
-    int pos_bandejaQ;
+    int PosTipo;
+    int PosBandejaQ;
     if (tipo == 'B')
-        pos_tipo = i;
+        PosTipo = i;
     if (tipo == 'D')
-        pos_tipo = i+1;
+        PosTipo = i+1;
     if (tipo == 'S')
-        pos_tipo = i+2;
-    string mutex = "Mut" + nombre + to_string(pos_tipo);
-    arrayMut = sem_open(mutex.c_str(), 0);
+        PosTipo = i+2;
+    string Mutex = "Mut" + Nombre + to_string(PosTipo);
+    arrayMut = sem_open(Mutex.c_str(), 0);
 
     sem_wait(arrayMut);
     if (tipo == 'B')
     {
-        pHeaderQ->b += cantidad;
+        PosHeaderQ->b += cantidad;
     }
     if (tipo == 'D')
     {
-        pHeaderQ->d += cantidad;
+        PosHeaderQ->d += cantidad;
     }
     if (tipo == 'S')
     {
-        pHeaderQ->s += cantidad;
+        PosHeaderQ->s += cantidad;
     }
     sem_post(arrayMut);
 
     return 0;
 }
 
-int ImprimirReactivo(string nombre)
+int ImprimirReactivo(string Nombre)
 {
-    char *dirQ = abrirQ(nombre);
-    HeaderQ *pHeaderQ = (HeaderQ *)dirQ;
+    char *dirQ = abrirQ(Nombre);
+    HeaderQ *PosHeaderQ = (HeaderQ *)dirQ;
 
-    cout << "Tenemos " << pHeaderQ->b << " de reactivo B" << endl;
-    cout << "Tenemos " << pHeaderQ->d << " de reactivo D" << endl;
-    cout << "Tenemos " << pHeaderQ->s << " de reactivo S" << endl;
+    cout << "Disponible " << PosHeaderQ->b << " de reactivo B" << endl;
+    cout << "Disponible " << PosHeaderQ->d << " de reactivo D" << endl;
+    cout << "Disponible" << PosHeaderQ->s << " de reactivo S" << endl;
     return 0;
 }
